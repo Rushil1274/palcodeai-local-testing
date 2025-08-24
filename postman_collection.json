@@ -1,0 +1,81 @@
+{
+  "info": {
+    "name": "AI Interview Screener",
+    "_postman_id": "8c7c3a3f-aaaa-bbbb-cccc-ddddeeefff00",
+    "description": "End-to-end without edits.\nRun in order: JD  Candidate  Trigger  Get Results.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {"method":"GET","header":[],"url":{"raw":"{{baseUrl}}/","host":["{{baseUrl}}"]}},
+      "response":[]
+    },
+    {
+      "name": "JD  Questions (text)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {"key":"X-API-Key","value":"{{apiKey}}"}
+        ],
+        "body": {
+          "mode":"formdata",
+          "formdata":[{"key":"jd_text","value":"We are hiring a Python backend engineer with FastAPI, SQL, and AWS experience. Must know async patterns, testing, and CI/CD.","type":"text"}]
+        },
+        "url": {"raw":"{{baseUrl}}/v1/jd","host":["{{baseUrl}}"],"path":["v1","jd"]}
+      },
+      "response":[]
+    },
+    {
+      "name": "Upload Resume (PDF/DOCX)",
+      "request": {
+        "method":"POST",
+        "header":[{"key":"X-API-Key","value":"{{apiKey}}"}],
+        "body":{"mode":"formdata","formdata":[{"key":"file","type":"file","src":""}]},
+        "url":{"raw":"{{baseUrl}}/v1/resume","host":["{{baseUrl}}"],"path":["v1","resume"]}
+      },
+      "response":[]
+    },
+    {
+      "name": "Add Candidate",
+      "request": {
+        "method":"POST",
+        "header":[{"key":"Content-Type","value":"application/json"},{"key":"X-API-Key","value":"{{apiKey}}"}],
+        "body":{"mode":"raw","raw":"{\n  \"name\": \"Ada Lovelace\",\n  \"phone_e164\": \"+14155550123\"\n}"},
+        "url":{"raw":"{{baseUrl}}/v1/candidates","host":["{{baseUrl}}"],"path":["v1","candidates"]}
+      },
+      "response":[]
+    },
+    {
+      "name": "Attach Resume Meta (optional)",
+      "request": {
+        "method":"POST",
+        "header":[{"key":"Content-Type","value":"application/json"},{"key":"X-API-Key","value":"{{apiKey}}"}],
+        "body":{"mode":"raw","raw":"{\n  \"years_experience\": 5,\n  \"skills\": [\"python\",\"fastapi\",\"sql\"],\n  \"notes\": \"strong on async\"\n}"},
+        "url":{"raw":"{{baseUrl}}/v1/candidates/{{candidate_id}}/resume_meta","host":["{{baseUrl}}"],"path":["v1","candidates",":candidate_id","resume_meta"]}
+      },
+      "response":[]
+    },
+    {
+      "name": "Trigger Interview (real call)",
+      "request": {
+        "method":"POST",
+        "header":[{"key":"Content-Type","value":"application/json"},{"key":"X-API-Key","value":"{{apiKey}}"}],
+        "body":{"mode":"raw","raw":"{\n  \"job_id\": \"{{job_id}}\",\n  \"candidate_id\": \"{{candidate_id}}\",\n  \"from_number\": \"{{fromNumber}}\"\n}"},
+        "url":{"raw":"{{baseUrl}}/v1/interviews","host":["{{baseUrl}}"],"path":["v1","interviews"]}
+      },
+      "response":[]
+    },
+    {
+      "name": "Get Results",
+      "request": {
+        "method":"GET",
+        "header":[{"key":"X-API-Key","value":"{{apiKey}}"}],
+        "url":{"raw":"{{baseUrl}}/v1/interviews/{{interview_id}}","host":["{{baseUrl}}"],"path":["v1","interviews",":interview_id"]}
+      },
+      "response":[]
+    }
+  ],
+  "variable": []
+}
+
